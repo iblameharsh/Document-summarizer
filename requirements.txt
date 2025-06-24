@@ -1,7 +1,7 @@
 streamlit
 nltk
 numpy
-sentencepiece
+sentencepiece==0.1.99
 scikit-learn
 transformers
 torch
