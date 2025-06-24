@@ -1,0 +1,10 @@
+streamlit
+nltk
+numpy
+sentencepiece
+scikit-learn
+transformers
+torch
+PyPDF2
+pdfplumber 
+PyMuPDF 
