@@ -1,10 +1,23 @@
-from transformers import T5ForConditionalGeneration, T5Tokenizer
+def abstractive_summary(text, min_length=100, max_length=200):
+    from transformers import BartTokenizer, BartForConditionalGeneration
+    tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+    model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
 
-model = T5ForConditionalGeneration.from_pretrained("t5-base")
-tokenizer = T5Tokenizer.from_pretrained("t5-base")
+    chunks = [para.strip() for para in text.split('\n') if para.strip()]
+    summaries = []
 
-def abstractive_summary(text, max_input_length=512, max_output_length=150):
-    input_text = "summarize: " + text.strip().replace("\n", " ")
-    inputs = tokenizer.encode(input_text, return_tensors="pt", max_length=max_input_length, truncation=True)
-    outputs = model.generate(inputs, max_length=max_output_length, early_stopping=True)
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+    for chunk in chunks:
+        inputs = tokenizer.encode(chunk, return_tensors="pt", max_length=1024, truncation=True)
+        summary_ids = model.generate(
+            inputs,
+            min_length=min_length,
+            max_length=max_length,
+            length_penalty=2.0,
+            num_beams=4,
+            early_stopping=True
+        )
+        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+        summaries.append(summary)
+
+    return "\n".join(summaries)
+

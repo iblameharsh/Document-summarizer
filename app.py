@@ -9,7 +9,7 @@ st.markdown("Supports both **Extractive** and **Abstractive** methods.")
 
 uploaded_file = st.file_uploader("Upload a .txt or .pdf file", type=["txt", "pdf"])
 method = st.radio("Select summarization method", ["Extractive", "Abstractive"])
-num_sentences = st.slider("Extractive: Number of sentences", 1, 20, 5)
+num_sentences = st.slider("Extractive: Number of sentences", 1, 30, 10)
 
 text = ""
 
